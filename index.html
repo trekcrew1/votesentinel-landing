@@ -459,13 +459,33 @@
         submitButton.textContent = 'Joining...';
         formMessage.classList.add('hidden');
         
+        // const response = await fetch(`${API_BASE_URL}/early-access`, {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ email, zip })
+        // });
+        
+        // if (!response.ok) throw new Error('Request failed');
+
         const response = await fetch(`${API_BASE_URL}/early-access`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, zip })
         });
         
-        if (!response.ok) throw new Error('Request failed');
+        if (!response.ok) {
+          let errorText = 'Something went wrong. Please try again.';
+          try {
+            const errData = await response.json();
+            if (errData.detail) {
+              errorText = errData.detail;
+            }
+          } catch (e) {
+            console.error('Failed to parse error response', e);
+          }
+          showMessage(errorText, 'error');
+          return;
+        }
         
         showMessage("You're in! We'll email you when VoteSentinel launches.", 'success');
         emailInput.value = '';
