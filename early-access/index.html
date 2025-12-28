@@ -488,6 +488,14 @@
         }
 
         showMessage("You're in! We'll email you when VoteSentinel launches.", 'success');
+
+        // GA4 conversion event (fires only on successful signup)
+        if (window.gtag) {
+          window.gtag('event', 'early_access_signup', {
+            method: 'early_access_form'
+          });
+        }
+        
         emailInput.value = '';
         zipInput.value = '';
         
