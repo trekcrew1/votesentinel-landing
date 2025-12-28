@@ -450,6 +450,11 @@
     // Handle form submission
     document.getElementById('earlyAccessForm').addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // TEMPORARY TEST — REMOVE AFTER CONFIRMATION
+      if (window.gtag) {
+        window.gtag('event', 'early_access_signup_test');
+      }
       
       const emailInput = document.getElementById('emailInput');
       const zipInput = document.getElementById('zipInput');
