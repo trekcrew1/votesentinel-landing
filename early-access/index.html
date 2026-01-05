@@ -450,11 +450,6 @@
     // Handle form submission
     document.getElementById('earlyAccessForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-
-      // TEMPORARY TEST — REMOVE AFTER CONFIRMATION
-      if (window.gtag) {
-        window.gtag('event', 'early_access_signup_test');
-      }
       
       const emailInput = document.getElementById('emailInput');
       const zipInput = document.getElementById('zipInput');
@@ -473,21 +468,13 @@
         submitButton.disabled = true;
         submitButton.textContent = 'Joining...';
         formMessage.classList.add('hidden');
-        
-        // const response = await fetch(`${API_BASE_URL}/early-access`, {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify({ email, zip })
-        // });
-        
-        // if (!response.ok) throw new Error('Request failed');
-        
+    
         const response = await fetch(`${API_BASE_URL}/early-access`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, zip })
         });
-
+    
         if (!response.ok) {
           let errorText = 'Something went wrong. Please try again.';
           try {
@@ -501,9 +488,9 @@
           showMessage(errorText, 'error');
           return;
         }
-
+    
         showMessage("You're in! We'll email you when VoteSentinel launches.", 'success');
-
+    
         // GA4 conversion event (fires only on successful signup)
         if (window.gtag) {
           window.gtag('event', 'early_access_signup', {
@@ -525,6 +512,7 @@
         submitButton.textContent = 'Join the Early Access List';
       }
     });
+
 
     // Show message helper
     function showMessage(text, type) {
